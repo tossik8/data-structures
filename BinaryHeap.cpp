@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <chrono>
 
 
 template <typename T>
@@ -64,9 +65,13 @@ public:
 	int upperBoundOfElements(int height) {
 		return std::pow(2, height + 1) - 1;
 	}
+	void sortHeap() {
+		std::sort(values.begin(), values.end()/*, std::greater<T>()*/);
+	}
 };
 
 int main() {
+	auto start = std::chrono::high_resolution_clock::now();
 	BinaryHeap<int>* binaryHeap = new BinaryHeap<int>();
 	binaryHeap->insert(10);
 	binaryHeap->insert(11);
@@ -118,5 +123,12 @@ int main() {
 
 	std::cout << "The smallest number of elements: " << binaryHeap->lowerBoundOfElements(binaryHeap->getHeight()) << ", the biggest number of elements: "
 		<< binaryHeap->upperBoundOfElements(binaryHeap->getHeight()) << '\n';
+
+	binaryHeap->sortHeap();
+	binaryHeap->print();
+
+	auto stop = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+	std::cout << "Total execution time: " << duration.count() << '\n';
 
 }
