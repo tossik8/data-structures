@@ -10,12 +10,6 @@ private:
 	std::vector<T> values;
 public:
 	BinaryHeap() : last(0) {}
-	~BinaryHeap() {
-		for (T value : values) {
-			std::cout << "Delete " << value << '\n';
-			delete value;
-		}
-	}
 	void insert(T value) {
 		values.push_back(value);
 		int lastCopy = ++last;
