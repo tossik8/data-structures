@@ -55,7 +55,15 @@ public:
 			}
 		}
 	}
-	
+	int getHeight() {
+		return std::log2(last) ;
+	}
+	int lowerBoundOfElements(int height) {
+		return std::pow(2, height);
+	}
+	int upperBoundOfElements(int height) {
+		return std::pow(2, height + 1) - 1;
+	}
 };
 
 int main() {
@@ -77,6 +85,7 @@ int main() {
 	binaryHeap->insert(27);
 	binaryHeap->insert(1);
 
+
 	binaryHeap->print();
 	std::cout << binaryHeap->findMin() << '\n';
 
@@ -87,5 +96,27 @@ int main() {
 	binaryHeap->deleteElement(0);
 
 	binaryHeap->print();
+
+	binaryHeap->deleteElement(13);
+
+	binaryHeap->print();
+
+	binaryHeap->insert(38);
+	binaryHeap->insert(72);
+	binaryHeap->insert(21);
+
+	binaryHeap->insert(233);
+	binaryHeap->insert(2);
+	binaryHeap->insert(137);
+
+	binaryHeap->insert(2433);
+	binaryHeap->insert(207);
+	binaryHeap->insert(42);
+
+	binaryHeap->print();
+
+
+	std::cout << "The smallest number of elements: " << binaryHeap->lowerBoundOfElements(binaryHeap->getHeight()) << ", the biggest number of elements: "
+		<< binaryHeap->upperBoundOfElements(binaryHeap->getHeight()) << '\n';
 
 }
