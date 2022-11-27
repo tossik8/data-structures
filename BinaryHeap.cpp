@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <vector>
 #include <chrono>
-
+#include <array>
 
 template <typename T>
 class BinaryHeap {
@@ -11,16 +11,14 @@ private:
 	std::vector<T> values;
 public:
 	BinaryHeap() : last(0) {}
+	~BinaryHeap() {
+		values.clear();
+		values.shrink_to_fit();
+	}
 	void insert(T value) {
 		values.push_back(value);
 		int lastCopy = ++last;
-		for (int i = lastCopy / 2; i >= 1; i/=2) {
-			if (values[i - 1] > values[lastCopy - 1]) {
-				std::swap(values[i-1], values[lastCopy - 1]);
-				lastCopy = i;
-			}
-			else break;
-		}
+		this->downHeap(lastCopy);
 	}
 	T findMin() {
 		return values.at(0);
@@ -32,12 +30,25 @@ public:
 		std::cout << '\n';
 	}
 	void deleteElement(int index) {
-		for(int i = index + 1; i > 1;i/=2){
-			std::swap(values[i - 1], values[i / 2 - 1]);
-		}
+		this->upHeap(index);
 		values[0] = values[--last];
 		values.erase(values.end()-1, values.end());
 		this->heapify();
+	}
+
+	void upHeap(int index) {
+		for (int i = index + 1; i > 1; i /= 2) {
+			std::swap(values[i - 1], values[i / 2 - 1]);
+		}
+	}
+	void downHeap(int lastCopy) {
+		for (int i = lastCopy / 2; i >= 1; i /= 2) {
+			if (values[i - 1] > values[lastCopy - 1]) {
+				std::swap(values[i - 1], values[lastCopy - 1]);
+				lastCopy = i;
+			}
+			else break;
+		}
 	}
 	void heapify() {
 		for (int i = 1; i <= last / 2;) {
@@ -130,5 +141,7 @@ int main() {
 	auto stop = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
 	std::cout << "Total execution time: " << duration.count() << '\n';
+
+	delete binaryHeap;
 
 }
