@@ -18,30 +18,31 @@ public:
 	void insert(T value) {
 		values.push_back(value);
 		int lastCopy = ++last;
-		this->downHeap(lastCopy);
+		this->upHeap(lastCopy);
 	}
 	T findMin() {
 		return values.at(0);
 	}
 	void print() {
-		for (T value : values){
+		for (T value : values) {
 			std::cout << value << " ";
 		}
 		std::cout << '\n';
 	}
 	void deleteElement(int index) {
-		this->upHeap(index);
+		this->moveUp(index);
 		values[0] = values[--last];
-		values.erase(values.end()-1, values.end());
-		this->heapify();
+		values.erase(values.end() - 1, values.end());
+		values.shrink_to_fit();
+		this->downHeap();
 	}
 
-	void upHeap(int index) {
+	void moveUp(int index) {
 		for (int i = index + 1; i > 1; i /= 2) {
 			std::swap(values[i - 1], values[i / 2 - 1]);
 		}
 	}
-	void downHeap(int lastCopy) {
+	void upHeap(int lastCopy) {
 		for (int i = lastCopy / 2; i >= 1; i /= 2) {
 			if (values[i - 1] > values[lastCopy - 1]) {
 				std::swap(values[i - 1], values[lastCopy - 1]);
@@ -50,7 +51,7 @@ public:
 			else break;
 		}
 	}
-	void heapify() {
+	void downHeap() {
 		for (int i = 1; i <= last / 2;) {
 			T& current = values[i - 1];
 			T& leftChild = values[i * 2 - 1];
@@ -68,7 +69,7 @@ public:
 		}
 	}
 	int getHeight() {
-		return std::log2(last) ;
+		return std::log2(last);
 	}
 	int lowerBoundOfElements(int height) {
 		return std::pow(2, height);
@@ -103,7 +104,7 @@ int main() {
 
 
 	binaryHeap->print();
-	std::cout << binaryHeap->findMin() << '\n';
+	std::cout << "Min element: " << binaryHeap->findMin() << '\n';
 
 	binaryHeap->deleteElement(4);
 
@@ -131,7 +132,6 @@ int main() {
 
 	binaryHeap->print();
 
-
 	std::cout << "The smallest number of elements: " << binaryHeap->lowerBoundOfElements(binaryHeap->getHeight()) << ", the biggest number of elements: "
 		<< binaryHeap->upperBoundOfElements(binaryHeap->getHeight()) << '\n';
 
@@ -143,5 +143,4 @@ int main() {
 	std::cout << "Total execution time: " << duration.count() << '\n';
 
 	delete binaryHeap;
-
 }
