@@ -32,19 +32,19 @@ public:
 		values[0] = values[--last];
 		values.erase(values.end() - 1, values.end());
 		values.shrink_to_fit();
-		this->downHeap();
+		this->downHeap(1);
 	}
-	void upHeap(int lastCopy) {
-		for (int i = lastCopy / 2; i >= 1; i /= 2) {
-			if (values[i - 1] > values[lastCopy - 1]) {
-				std::swap(values[i - 1], values[lastCopy - 1]);
-				lastCopy = i;
+	void upHeap(int index) {
+		for (int i = index / 2; i >= 1; i /= 2) {
+			if (values[i - 1] > values[index - 1]) {
+				std::swap(values[i - 1], values[index - 1]);
+				index = i;
 			}
 			else break;
 		}
 	}
-	void downHeap() {
-		for (int i = 1; i <= last / 2;) {
+	void downHeap(int index) {
+		for (int i = index; i <= last / 2;) {
 			T& current = values[i - 1];
 			T& leftChild = values[i * 2 - 1];
 			T& rightChild = values[i * 2];
