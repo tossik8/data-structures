@@ -17,8 +17,7 @@ public:
 	}
 	void insert(T value) {
 		values.push_back(value);
-		int lastCopy = ++last;
-		this->upHeap(lastCopy);
+		this->upHeap(++last);
 	}
 	T findMin() {
 		return values.at(0);
@@ -29,18 +28,11 @@ public:
 		}
 		std::cout << '\n';
 	}
-	void deleteElement(int index) {
-		this->moveUp(index);
+	void deleteMin() {
 		values[0] = values[--last];
 		values.erase(values.end() - 1, values.end());
 		values.shrink_to_fit();
 		this->downHeap();
-	}
-
-	void moveUp(int index) {
-		for (int i = index + 1; i > 1; i /= 2) {
-			std::swap(values[i - 1], values[i / 2 - 1]);
-		}
 	}
 	void upHeap(int lastCopy) {
 		for (int i = lastCopy / 2; i >= 1; i /= 2) {
@@ -106,15 +98,18 @@ int main() {
 	binaryHeap->print();
 	std::cout << "Min element: " << binaryHeap->findMin() << '\n';
 
-	binaryHeap->deleteElement(4);
+	binaryHeap->deleteMin();
 
 	binaryHeap->print();
 
-	binaryHeap->deleteElement(0);
+	std::cout << "Min element: " << binaryHeap->findMin() << '\n';
+
+
+	binaryHeap->deleteMin();
 
 	binaryHeap->print();
 
-	binaryHeap->deleteElement(13);
+	binaryHeap->deleteMin();
 
 	binaryHeap->print();
 
